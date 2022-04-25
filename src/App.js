@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import Modal from "react-bootstrap/Modal";
 import BoardGamesBanner from "Components/BoardGamesBanner";
 // @ts-ignore
 import { React, useEffect, useState } from "react";
@@ -31,6 +32,7 @@ function App() {
   const [checked, setChecked] = useState([]);
   const [pabloBoardGames, setPabloBoardGames] = useState([]);
   const [feboBoardGames, setFeboBoardGames] = useState([]);
+  const [selectedGame, setSelectedGame] = useState("");
 
   useEffect(() => {
     if (checked.includes("pablo")) {
@@ -55,11 +57,20 @@ function App() {
     setChecked(value);
   };
 
-  const handleRandomizeClick = (value) => {};
+  const handleRandomizeClick = (value) => {
+    const totalList = [...pabloBoardGames, ...feboBoardGames];
+    const randomIndex = Math.floor(Math.random() * totalList.length);
+    const item = totalList[randomIndex];
+    setSelectedGame(item);
+  };
 
   return (
     <>
-      <ToggleButtonGroup type="checkbox" value={checked} onChange={handleChecked}>
+      <ToggleButtonGroup
+        type="checkbox"
+        value={checked}
+        onChange={handleChecked}
+      >
         <ToggleButton id="tbg-btn-pablo" value={"pablo"}>
           Pablo
         </ToggleButton>
@@ -70,6 +81,17 @@ function App() {
       <Button onClick={handleRandomizeClick}>Randomize!</Button>
       <BoardGamesBanner games={pabloBoardGames}></BoardGamesBanner>
       <BoardGamesBanner games={feboBoardGames}></BoardGamesBanner>
+      {selectedGame != "" && (
+        <Modal.Dialog>
+          <Modal.Header closeButton>
+            <Modal.Title>{selectedGame.name._text}</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <img src={selectedGame.image._text}></img>
+          </Modal.Body>
+        </Modal.Dialog>
+      )}
     </>
   );
 }
