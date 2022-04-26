@@ -41,3 +41,9 @@
   height: 8vw;
   object-fit: cover;
 }
+
+.boardGamesBannerContainer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

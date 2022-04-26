@@ -4,12 +4,16 @@ import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import Modal from "react-bootstrap/Modal";
+import Image from "react-bootstrap/Image";
 import BoardGamesBanner from "Components/BoardGamesBanner";
 // @ts-ignore
 import { React, useEffect, useState } from "react";
 import axios from "axios";
+import { BsCircleFill, BsCircle } from "react-icons/bs";
 
 var convert = require("xml-js");
+
+const { rando, randoSequence } = require("@nastyox/rando.js");
 
 const api = "https://boardgamegeek.com/xmlapi2/collection?username=";
 
@@ -32,7 +36,14 @@ function App() {
   const [checked, setChecked] = useState([]);
   const [pabloBoardGames, setPabloBoardGames] = useState([]);
   const [feboBoardGames, setFeboBoardGames] = useState([]);
-  const [selectedGame, setSelectedGame] = useState("");
+  const [selectedGame, setSelectedGame] = useState({
+    name: { _text: "" },
+    image: { _text: "" },
+  });
+
+  // Modal Handling
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
 
   useEffect(() => {
     if (checked.includes("pablo")) {
@@ -59,39 +70,76 @@ function App() {
 
   const handleRandomizeClick = (value) => {
     const totalList = [...pabloBoardGames, ...feboBoardGames];
-    const randomIndex = Math.floor(Math.random() * totalList.length);
-    const item = totalList[randomIndex];
-    setSelectedGame(item);
+    console.log(totalList);
+    if (totalList.length > 0) {
+      const randomIndex = rando(0, totalList.length - 1);
+      const item = totalList[randomIndex];
+      setSelectedGame(item);
+      setShow(true);
+    }
   };
 
   return (
     <>
-      <ToggleButtonGroup
-        type="checkbox"
-        value={checked}
-        onChange={handleChecked}
-      >
-        <ToggleButton id="tbg-btn-pablo" value={"pablo"}>
-          Pablo
-        </ToggleButton>
-        <ToggleButton id="tbg-btn-febo" value={"febo"}>
-          Febo
-        </ToggleButton>
-      </ToggleButtonGroup>
       <Button onClick={handleRandomizeClick}>Randomize!</Button>
-      <BoardGamesBanner games={pabloBoardGames}></BoardGamesBanner>
-      <BoardGamesBanner games={feboBoardGames}></BoardGamesBanner>
-      {selectedGame != "" && (
-        <Modal.Dialog>
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedGame.name._text}</Modal.Title>
-          </Modal.Header>
+      <div className="boardGamesBannerContainer">
+        <BoardGamesBanner games={pabloBoardGames}></BoardGamesBanner>
+        <BoardGamesBanner games={feboBoardGames}></BoardGamesBanner>
 
-          <Modal.Body>
-            <img src={selectedGame.image._text}></img>
-          </Modal.Body>
-        </Modal.Dialog>
-      )}
+        <ToggleButtonGroup
+          type="checkbox"
+          value={checked}
+          onChange={handleChecked}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: "5px",
+          }}
+        >
+          <ToggleButton
+            id="tbg-btn-pablo"
+            variant="outline-primary"
+            value={"pablo"}
+          >
+            {checked.includes("pablo") ? (
+              <BsCircleFill style={{ verticalAlign: "middle" }} />
+            ) : (
+              <BsCircle style={{ verticalAlign: "middle" }} />
+            )}{" "}
+            Pablo's Games
+          </ToggleButton>
+          <ToggleButton
+            id="tbg-btn-febo"
+            variant="outline-success"
+            value={"febo"}
+          >
+            {checked.includes("febo") ? (
+              <BsCircleFill style={{ verticalAlign: "middle" }} />
+            ) : (
+              <BsCircle style={{ verticalAlign: "middle" }} />
+            )}{" "}
+            Febo's Games
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedGame.name._text}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Image
+            src={selectedGame.image._text}
+            alt="selected board game"
+            rounded={true}
+            fluid={true}
+          ></Image>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }

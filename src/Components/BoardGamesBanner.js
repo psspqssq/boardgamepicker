@@ -4,12 +4,19 @@ import CardGroup from "react-bootstrap/CardGroup";
 
 const BoardGamesBanner = (props) => {
   return (
-    <CardGroup>
+    <CardGroup
+      style={{ display: "flex", flexWrap: "nowrap", overflowX: "hidden" }}
+    >
       {props.games.map((item) => (
-        <Card style={{ width: "5rem" }}>
+        <Card
+          style={{ width: "20rem", flex: "0 0 auto" }}
+          key={item.name._text}
+        >
           <Card.Img variant="top" src={item.image._text} />
           <Card.Body>
-            <Card.Title>{item.name._text}</Card.Title>
+            <Card.Title>
+              {item.name._text} ({item.yearpublished._text})
+            </Card.Title>
           </Card.Body>
         </Card>
       ))}
