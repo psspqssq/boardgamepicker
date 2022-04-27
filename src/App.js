@@ -1,4 +1,5 @@
 import "./App.css";
+import background from "./images/bg.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import ToggleButton from "react-bootstrap/ToggleButton";
@@ -80,8 +81,22 @@ function App() {
   };
 
   return (
-    <>
-      <Button onClick={handleRandomizeClick}>Randomize!</Button>
+    <div
+      style={{
+        backgroundImage: `url(${background})`,
+        width: "100vw",
+        height: "100vh",
+        minHeight: "100%",
+        boxSizing: "borderBox",
+        overflowX: "hidden",
+        overflowY: "hidden",
+      }}
+    >
+      <div class="row justify-content-center">
+        <Button style={{ maxWidth: "300px", height: "100px", marginTop: "100px" }} variant="outline-secondary" onClick={handleRandomizeClick}>
+          Randomize!
+        </Button>
+      </div>
       <div className="boardGamesBannerContainer">
         <BoardGamesBanner games={pabloBoardGames}></BoardGamesBanner>
         <BoardGamesBanner games={feboBoardGames}></BoardGamesBanner>
@@ -96,43 +111,22 @@ function App() {
             margin: "5px",
           }}
         >
-          <ToggleButton
-            id="tbg-btn-pablo"
-            variant="outline-primary"
-            value={"pablo"}
-          >
-            {checked.includes("pablo") ? (
-              <BsCircleFill style={{ verticalAlign: "middle" }} />
-            ) : (
-              <BsCircle style={{ verticalAlign: "middle" }} />
-            )}{" "}
-            Pablo's Games
+          <ToggleButton id="tbg-btn-pablo" variant="outline-primary" value={"pablo"}>
+            {checked.includes("pablo") ? <BsCircleFill style={{ verticalAlign: "middle" }} /> : <BsCircle style={{ verticalAlign: "middle" }} />} Pablo's Games
           </ToggleButton>
-          <ToggleButton
-            id="tbg-btn-febo"
-            variant="outline-success"
-            value={"febo"}
-          >
-            {checked.includes("febo") ? (
-              <BsCircleFill style={{ verticalAlign: "middle" }} />
-            ) : (
-              <BsCircle style={{ verticalAlign: "middle" }} />
-            )}{" "}
-            Febo's Games
+          <ToggleButton id="tbg-btn-febo" variant="outline-success" value={"febo"}>
+            {checked.includes("febo") ? <BsCircleFill style={{ verticalAlign: "middle" }} /> : <BsCircle style={{ verticalAlign: "middle" }} />} Febo's Games
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{selectedGame.name._text}</Modal.Title>
+          <Modal.Title>
+            {selectedGame.name._text} ({selectedGame.yearpublished._text})
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Image
-            src={selectedGame.image._text}
-            alt="selected board game"
-            rounded={true}
-            fluid={true}
-          ></Image>
+        <Modal.Body style={{ textAlign: "center" }}>
+          <Image src={selectedGame.image._text} alt="selected board game" rounded={true} fluid={true} style={{ maxHeight: "50vh" }}></Image>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -140,7 +134,7 @@ function App() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 }
 
