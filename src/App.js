@@ -122,7 +122,7 @@ function App() {
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {selectedGame.name._text} ({selectedGame.yearpublished._text})
+            {selectedGame.name._text || ""} ({selectedGame.yearpublished._text || ""})
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: "center" }}>
