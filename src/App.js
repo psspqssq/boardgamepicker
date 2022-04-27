@@ -119,21 +119,23 @@ function App() {
           </ToggleButton>
         </ToggleButtonGroup>
       </div>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {selectedGame.name._text || ""} ({selectedGame.yearpublished._text || ""})
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ textAlign: "center" }}>
-          <Image src={selectedGame.image._text} alt="selected board game" rounded={true} fluid={true} style={{ maxHeight: "50vh" }}></Image>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {selectedGame !== undefined && (
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {selectedGame.name._text || ""} ({selectedGame.yearpublished._text || ""})
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body style={{ textAlign: "center" }}>
+            <Image src={selectedGame.image._text} alt="selected board game" rounded={true} fluid={true} style={{ maxHeight: "50vh" }}></Image>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
     </div>
   );
 }
