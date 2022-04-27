@@ -127,7 +127,7 @@ function App() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body style={{ textAlign: "center" }}>
-            <Image src={selectedGame.image._text} alt="selected board game" rounded={true} fluid={true} style={{ maxHeight: "50vh" }}></Image>
+            <Image src={selectedGame.image._text || ""} alt="selected board game" rounded={true} fluid={true} style={{ maxHeight: "50vh" }}></Image>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
