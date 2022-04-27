@@ -40,6 +40,7 @@ function App() {
   const [selectedGame, setSelectedGame] = useState({
     name: { _text: "" },
     image: { _text: "" },
+    yearpublished: { _text: "" },
   });
 
   // Modal Handling
